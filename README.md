@@ -55,9 +55,13 @@ pip install web3
 ## Project Contributors
 
 Kevin BaRoss
+
 Rachel Bates
+
 Michael Canavan
+
 Catherine Croft
+
 Vic Gellon
 
 ---
