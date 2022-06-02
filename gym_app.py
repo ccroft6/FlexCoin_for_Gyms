@@ -49,27 +49,10 @@ wallet_balance_flex_token = int(wallet_balance_wei/1000000000000000000)
 # Wallet_FLEX_balance = contract.functions.balanceOf(address).transact()
 # st.write(f"Your wallet contains {Wallet_FLEX_balance} FLEX tokens.")
 
-
 private_key = st.text_input("Your Private Key")
 
 # Items list
-items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
-
-# Create a select box to choose an item to buy 
-select_item = st.sidebar.selectbox('Select an Item', items)
-
-df = pd.read_csv("gym_items.csv", index_col = "item", parse_dates=True, infer_datetime_format = True)
-
-df.sort_index(inplace=True, ascending = False)
-
-# Slider for quantity of item 
-quantity = st.sidebar.slider("Select Quantity of Item:", 1, 10, 2)
-
-# Show cost of items
-# st.table(df)
-
-# Identify the price 
-price = df.loc[:, "token_cost"]
+items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage", "Additional Token"]
 
 # Gym Store
 item_database = {
@@ -83,11 +66,26 @@ item_database = {
     "Additional Token": ["Additional Token", 1, "Images/token.png"] 
     }
 
-# Write the item price to the sidebar
-st.sidebar.write(price)
+# Create a select box to choose an item to buy 
+select_item = st.sidebar.selectbox('Select an Item', items)
 
 # Show image of item
 st.sidebar.image(item_database[select_item][2])
+
+df = pd.read_csv("gym_items.csv", index_col = "item", parse_dates=True, infer_datetime_format = True)
+
+df.sort_index(inplace=True, ascending = False)
+
+# Slider for quantity of item 
+quantity = st.sidebar.slider("Select Quantity of Item:", 1, 100, 2)
+
+# Identify the price 
+price = df.loc[:, "token_cost"]
+
+
+
+# Write the item price to the sidebar
+st.sidebar.write(price)
 
 # Calculate total price for the item by multiplying the item price by the quantity 
 total = item_database[select_item][1] * quantity
