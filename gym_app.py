@@ -83,9 +83,10 @@ df.sort_index(inplace=True, ascending = False)
 quantity = st.sidebar.slider("Select Quantity of Item:", 1, 100, 2)
 
 # Identify the price 
-price = df.loc[:, "token_cost"]
+price = item_database[select_item][1]
 
 # Write the item price to the sidebar
+st.sidebar.write('The price of this item is:')
 st.sidebar.write(price)
 
 # Calculate total price for the item by multiplying the item price by the quantity 
