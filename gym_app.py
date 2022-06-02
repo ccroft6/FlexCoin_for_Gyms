@@ -36,7 +36,7 @@ def load_contract():
 contract = load_contract()
 
 # Streamlit image and title 
-st.image("Images/eth_weights.png")
+st.image("Images/eth_weights.png", use_column_width = True)
 st.title("FlexCoin for the BlockGym")
 st.markdown("## FlexCoin incentivizes you to come to the gym at a time when it is not too busy, so that you can access the equipment you need now to flex your muscles later.")
 
@@ -49,7 +49,7 @@ wallet_balance_flex_token = int(wallet_balance_wei/1000000000000000000)
 # Wallet_FLEX_balance = contract.functions.balanceOf(address).transact()
 # st.write(f"Your wallet contains {Wallet_FLEX_balance} FLEX tokens.")
 
-private_key = st.text_input("Your Private Key")
+private_key = st.text_input("Enter Your Private Key")
 
 # Items list
 items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
@@ -67,7 +67,7 @@ item_database = {
     }
 
 # Title for sidebar
-st.sidebar.title('Gym Store')
+st.sidebar.title('BlockGym Store')
 
 # Create a select box to choose an item to buy 
 select_item = st.sidebar.selectbox('Select an Item', items)
@@ -96,6 +96,9 @@ total = item_database[select_item][1] * quantity
 st.sidebar.write(f'The Item(s) You Selected Cost: {total} tokens')
 st.sidebar.write(total)
 
+# Gym Store Header
+st.markdown('### To purchase the items selected from the BlockGym Store, press the button below.')
+
 # Purchase items button
 if st.button("PURCHASE ITEM(S)"):
     tx_hash = contract.functions.transfer(address, total).transact({
@@ -108,7 +111,7 @@ if st.button("PURCHASE ITEM(S)"):
 
 # Membership description
 st.markdown('## Membership Costs')
-st.markdown('### Each month, members must purchase at least 50 tokens. Additional tokens can be purchased below.') 
+st.markdown('### Each month, members must purchase at least 50 tokens.') 
 st.image('Images/member_token.png')
 
 # Purchase button 
