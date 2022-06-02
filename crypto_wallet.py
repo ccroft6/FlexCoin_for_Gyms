@@ -10,7 +10,7 @@
 import os
 import requests
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv('SAMPLE.env')
 from bip44 import Wallet
 from web3 import Account
 from web3 import middleware
