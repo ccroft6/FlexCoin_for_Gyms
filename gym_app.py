@@ -62,13 +62,14 @@ df = pd.read_csv("gym_items.csv", index_col = "item", parse_dates=True, infer_da
 
 df.sort_index(inplace=True, ascending = False)
 
-start = st.selectbox("Select a Gym item:", df.index)
+# Slider for quantity of item 
+quantity = st.sidebar.slider("Select Quantity of Item:", 1, 10, 2)
 
-st.slider("Select Quantity of item:", 10, 2)
+# Show cost of items
+# st.table(df)
 
-
-
-st.table(df)
+# Identify the price 
+price = df.loc[:, "token_cost"]
 
 # Gym Store
 item_database = {
@@ -78,21 +79,40 @@ item_database = {
     "Gym Bag": ["Gym Bag", 15, "Images/gym_bag.jpeg"],
     "Gym Shirt": ["Gym Shirt", 10, "Images/gym_shirt.jpeg"],
     "Gym Shorts": ["Gym Shorts", 12, "Images/gym_shorts.jpeg"],
-    "Full Body Massage": ["Full Body Massage", 20, "Images/massage.jpeg"]
-}
+    "Full Body Massage": ["Full Body Massage", 20, "Images/massage.jpeg"],
+    "Additional Token": ["Additional Token", 1, "Images/token.png"] 
+    }
 
-def get_items():
-    db_list = list(item_database.values())
+# Write the item price to the sidebar
+st.sidebar.write(price)
 
-    for number in range(len(items)):
-        st.image(db_list[number][2], width=200)
-        st.write("Gym Items", db_list[number][0])
-        st.write("Price Per Item", db_list[number][1], "eth")
-    
-    return get_items
+# Show image of item
+st.sidebar.image(item_database[select_item][2])
 
+# Calculate total price for the item by multiplying the item price by the quantity 
+total = item_database[select_item][1] * quantity
 
-if st.button("PURCHASE MEMBERSHIP"):
+# Show total cost of item(s)
+st.sidebar.write('The Item(s) You Selected Cost:')
+st.sidebar.write(total)
+
+# Purchase items button
+if st.button("PURCHASE ITEM(S)"):
+    tx_hash = contract.functions.transfer(address, total).transact({
+        "from": address,
+        "gas": 1000000
+    })
+    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    st.write("Transaction receipt mined:")
+    st.write(dict(receipt))
+
+# Membership description
+st.markdown('## Membership Costs')
+st.markdown('### Each month, members must purchase at least 50 tokens') 
+
+# Purchase button 
+
+if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
     tx_hash = contract.functions.transfer(address, 50).transact({
         "from": address,
         "gas": 1000000
