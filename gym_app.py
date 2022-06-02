@@ -3,11 +3,14 @@ import os
 import json
 from pathlib import Path
 import streamlit as st
-from web3 import Web3
+from web3 import Web3 
 from dotenv import load_dotenv
 from crypto_wallet import generate_account, get_balance, send_transaction
 import pandas as pd
 load_dotenv("SAMPLE.env")
+
+# Define and connect to a new Web3 provider
+w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
 
 # Loads the contract once using cache
 # Connects to the contract using the contract address and ABI
@@ -32,10 +35,6 @@ def load_contract():
 # Load the contract
 contract = load_contract()
 
-# Define and connect to a new Web3 provider
-w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
-
-
 # Streamlit image and title 
 st.image("Images/eth_weights.png")
 st.title("FlexCoin for the BlockGym")
@@ -46,10 +45,30 @@ st.write("Choose your account to get started")
 accounts = w3.eth.accounts
 address = st.selectbox("Select Account", options = accounts)
 wallet_balance_wei = w3.eth.getBalance(address)
-wallet_balance_flex_token = int(wallet_balance_wei/100000000000000000)
-st.write(f"Your wallet contains {wallet_balance_flex_token} FLEX tokens.")
+wallet_balance_flex_token = int(wallet_balance_wei/1000000000000000000)
+# Wallet_FLEX_balance = contract.functions.balanceOf(address).transact()
+# st.write(f"Your wallet contains {Wallet_FLEX_balance} FLEX tokens.")
+
 
 private_key = st.text_input("Your Private Key")
+
+# Items list
+items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
+
+# Create a select box to choose an item to buy 
+select_item = st.sidebar.selectbox('Select an Item', items)
+
+df = pd.read_csv("gym_items.csv", index_col = "item", parse_dates=True, infer_datetime_format = True)
+
+df.sort_index(inplace=True, ascending = False)
+
+start = st.selectbox("Select a Gym item:", df.index)
+
+st.slider("Select Quantity of item:", 10, 2)
+
+
+
+st.table(df)
 
 # Gym Store
 item_database = {
@@ -62,9 +81,6 @@ item_database = {
     "Full Body Massage": ["Full Body Massage", 20, "Images/massage.jpeg"]
 }
 
-
-items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
-
 def get_items():
     db_list = list(item_database.values())
 
@@ -72,19 +88,18 @@ def get_items():
         st.image(db_list[number][2], width=200)
         st.write("Gym Items", db_list[number][0])
         st.write("Price Per Item", db_list[number][1], "eth")
+    
+    return get_items
 
-# Create a select box to choose an item to buy 
-select_item = st.sidebar.selectbox('Select an Item', items)
 
-df = pd.read_csv("gym_items.csv", index_col = "item", parse_dates=True, infer_datetime_format = True)
-
-df.sort_index(inplace=True, ascending = False)
-
-start = st.selectbox("Select a Gym item:", df.index)
-
-st.table(df)
-
-st.button("PURCHASE")
+if st.button("PURCHASE MEMBERSHIP"):
+    tx_hash = contract.functions.transfer(address, 50).transact({
+        "from": address,
+        "gas": 1000000
+    })
+    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    st.write("Transaction receipt mined:")
+    st.write(dict(receipt))
 
 
 
