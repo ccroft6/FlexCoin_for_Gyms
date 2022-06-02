@@ -5,7 +5,7 @@ from pathlib import Path
 import streamlit as st
 from web3 import Web3
 from dotenv import load_dotenv
-from crypto_wallet.py import generate_account, get_balance, send_transaction 
+import crypto_wallet.py
  
 load_dotenv()
 
