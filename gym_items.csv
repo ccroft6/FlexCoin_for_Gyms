@@ -1,4 +1,4 @@
-item,token_cost
+item,item
 towel,2
 smoothie,7
 water_bottle,3
@@ -6,3 +6,4 @@ gym_bag,15
 gym_shirt,10
 gym_shorts,12
 massage,20
+additional_token,1
