@@ -52,7 +52,7 @@ wallet_balance_flex_token = int(wallet_balance_wei/1000000000000000000)
 private_key = st.text_input("Your Private Key")
 
 # Items list
-items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage", "Additional Token"]
+items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
 
 # Gym Store
 item_database = {
@@ -63,7 +63,7 @@ item_database = {
     "Gym Shirt": ["Gym Shirt", 10, "Images/gym_shirt.jpeg"],
     "Gym Shorts": ["Gym Shorts", 12, "Images/gym_shorts.jpeg"],
     "Full Body Massage": ["Full Body Massage", 20, "Images/massage.jpeg"],
-    "Additional Token": ["Additional Token", 1, "Images/token.png"] 
+    "Additional Token": ["Additional Token", 1, "Images/token.jpeg"] 
     }
 
 # Title for sidebar
@@ -80,7 +80,7 @@ df = pd.read_csv("gym_items.csv", index_col = "item", parse_dates=True, infer_da
 df.sort_index(inplace=True, ascending = False)
 
 # Slider for quantity of item 
-quantity = st.sidebar.slider("Select Quantity of Item:", 1, 100, 2)
+quantity = st.sidebar.slider("Select Quantity of Item:", 1, 50, 2)
 
 # Identify the price 
 price = item_database[select_item][1]
@@ -114,6 +114,20 @@ st.markdown('### Each month, members must purchase at least 50 tokens. Additiona
 
 if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
     tx_hash = contract.functions.transfer(address, 50).transact({
+        "from": address,
+        "gas": 1000000
+    })
+    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    st.write("Transaction receipt mined:")
+    st.write(dict(receipt))
+
+# Purchase additional tokens
+st.markdown('### Running out of tokens this month? Purchase additional tokens here!')
+st.image(item_database["Additional Token"][2])
+additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20)
+
+if st.button("PURCHASE ADDITIONAL TOKENS"):
+    tx_hash = contract.functions.transfer(address, additional_quantity).transact({
         "from": address,
         "gas": 1000000
     })
