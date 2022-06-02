@@ -5,9 +5,9 @@ from pathlib import Path
 import streamlit as st
 from web3 import Web3
 from dotenv import load_dotenv
-import crypto_wallet.py
- 
-load_dotenv()
+from crypto_wallet import generate_account, get_balance, send_transaction
+import pandas as pd
+load_dotenv("SAMPLE.env")
 
 # Loads the contract once using cache
 # Connects to the contract using the contract address and ABI
@@ -15,7 +15,7 @@ load_dotenv()
 def load_contract():
 
     # Load the contract ABI
-    with open(Path('./contracts/compiled/FlexCoin_abi.json')) as f:
+    with open(Path('./FlexCoin_abi.json')) as f:
         contract_abi = json.load(f)
 
     # Set the contract address (this is the address of the deployed contract)
@@ -62,13 +62,14 @@ item_database = {
     "Full Body Massage": ["Full Body Massage", 20, "Images/massage.jpeg"]
 }
 
+
 items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
 
-def get_items(w3):
+def get_items():
     db_list = list(item_database.values())
 
     for number in range(len(items)):
-        st.image(db_list[number][3], width=200)
+        st.image(db_list[number][2], width=200)
         st.write("Gym Items", db_list[number][0])
         st.write("Price Per Item", db_list[number][1], "eth")
 
