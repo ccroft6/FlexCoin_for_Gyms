@@ -119,6 +119,3 @@ if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
     st.write(dict(receipt))
-
-
-
