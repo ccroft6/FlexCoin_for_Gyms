@@ -1,3 +1,5 @@
+# Cryptocurrency Wallet
+
 # Imports
 import os
 import requests
