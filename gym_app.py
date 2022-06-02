@@ -5,32 +5,33 @@ from pathlib import Path
 import streamlit as st
 from web3 import Web3
 from dotenv import load_dotenv
-from crypto_wallet.py import generate_account, get_balance, send_transaction 
+from crypto_wallet import generate_account, get_balance, send_transaction 
+import pandas as pd
  
 load_dotenv()
 
-# Loads the contract once using cache
-# Connects to the contract using the contract address and ABI
-@st.cache(allow_output_mutation=True)
-def load_contract():
+# # Loads the contract once using cache
+# # Connects to the contract using the contract address and ABI
+# @st.cache(allow_output_mutation=True)
+# def load_contract():
 
-    # Load the contract ABI
-    with open(Path('./contracts/compiled/FlexCoin_abi.json')) as f:
-        contract_abi = json.load(f)
+#     # Load the contract ABI
+#     with open(Path('./contracts/compiled/FlexCoin_abi.json')) as f:
+#         contract_abi = json.load(f)
 
-    # Set the contract address (this is the address of the deployed contract)
-    contract_address = os.getenv("SMART_CONTRACT_ADDRESS")
+#     # Set the contract address (this is the address of the deployed contract)
+#     contract_address = os.getenv("SMART_CONTRACT_ADDRESS")
 
-    # Get the contract
-    contract = w3.eth.contract(
-        address=contract_address,
-        abi=contract_abi
-    )
+#     # Get the contract
+#     contract = w3.eth.contract(
+#         address=contract_address,
+#         abi=contract_abi
+#     )
 
-    return contract
+    # return contract
 
-# Load the contract
-contract = load_contract()
+# # Load the contract
+# contract = load_contract()
 
 # Define and connect to a new Web3 provider
 w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
@@ -67,10 +68,10 @@ items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Short
 def get_items(w3):
     db_list = list(item_database.values())
 
-    for number in range(len(items)):
-        st.image(db_list[number][3], width=200)
-        st.write("Gym Items", db_list[number][0])
-        st.write("Price Per Item", db_list[number][1], "eth")
+    for item in db_list:
+        st.image(db_list[item][2], width=200)
+        st.write("Gym Items", db_list[item][0])
+        st.write("Price Per Item", db_list[item][1], "eth")
 
 # Create a select box to choose an item to buy 
 select_item = st.sidebar.selectbox('Select an Item', items)
