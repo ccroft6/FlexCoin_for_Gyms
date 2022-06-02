@@ -66,6 +66,9 @@ item_database = {
     "Additional Token": ["Additional Token", 1, "Images/token.png"] 
     }
 
+# Title for sidebar
+st.sidebar.title('Gym Store')
+
 # Create a select box to choose an item to buy 
 select_item = st.sidebar.selectbox('Select an Item', items)
 
@@ -81,8 +84,6 @@ quantity = st.sidebar.slider("Select Quantity of Item:", 1, 100, 2)
 
 # Identify the price 
 price = df.loc[:, "token_cost"]
-
-
 
 # Write the item price to the sidebar
 st.sidebar.write(price)
@@ -106,7 +107,7 @@ if st.button("PURCHASE ITEM(S)"):
 
 # Membership description
 st.markdown('## Membership Costs')
-st.markdown('### Each month, members must purchase at least 50 tokens') 
+st.markdown('### Each month, members must purchase at least 50 tokens. Additional tokens can be purchased from the gym store on the sidebar.') 
 
 # Purchase button 
 
