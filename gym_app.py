@@ -108,7 +108,8 @@ if st.button("PURCHASE ITEM(S)"):
 
 # Membership description
 st.markdown('## Membership Costs')
-st.markdown('### Each month, members must purchase at least 50 tokens. Additional tokens can be purchased from the gym store on the sidebar.') 
+st.markdown('### Each month, members must purchase at least 50 tokens. Additional tokens can be purchased below.') 
+st.image('Images/member_token.png')
 
 # Purchase button 
 
