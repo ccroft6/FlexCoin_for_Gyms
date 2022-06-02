@@ -56,7 +56,7 @@ items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Short
 
 # Gym Store
 item_database = {
-    "Towel": ["Towel", 1, "Images/towel.jpeg"],
+    "Towel": ["Towel", 2, "Images/towel.jpeg"],
     "Smoothie": ["Smoothie", 7, "Images/smoothie.jpeg"],
     "Water Bottle": ["Water Bottle", 3, "Images/water_bottle.jpeg"],
     "Gym Bag": ["Gym Bag", 15, "Images/gym_bag.jpeg"],
@@ -86,14 +86,14 @@ quantity = st.sidebar.slider("Select Quantity of Item:", 1, 100, 2)
 price = item_database[select_item][1]
 
 # Write the item price to the sidebar
-st.sidebar.write('The price of this item is:')
+st.sidebar.write(f'The price of this item is: {price} tokens')
 st.sidebar.write(price)
 
 # Calculate total price for the item by multiplying the item price by the quantity 
 total = item_database[select_item][1] * quantity
 
 # Show total cost of item(s)
-st.sidebar.write('The Item(s) You Selected Cost:')
+st.sidebar.write(f'The Item(s) You Selected Cost: {total} tokens')
 st.sidebar.write(total)
 
 # Purchase items button
