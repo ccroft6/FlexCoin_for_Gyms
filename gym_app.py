@@ -12,6 +12,10 @@ load_dotenv("SAMPLE.env")
 # Define and connect to a new Web3 provider
 w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
 
+# Set as main streamlit page
+st.markdown("# BlockGym 🎈")
+st.sidebar.markdown("# BlockGym 🎈")
+
 # Loads the contract once using cache
 # Connects to the contract using the contract address and ABI
 @st.cache(allow_output_mutation=True)
@@ -45,8 +49,7 @@ st.write("Choose your account to get started")
 accounts = w3.eth.accounts
 address = st.selectbox("Select Account", options = accounts)
 
-
-# FROM MIKE: This is my attempt to look up the FLEX Balance, but it makes a transaction that charges gas currently, and I don't know how to pull the blance info from the receipt.
+# Get the current balance of the tokens
 tx_hash = contract.functions.balanceOf(address).transact({
     "from": address,
     "gas": 1000000
@@ -55,14 +58,11 @@ receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 st.write("Transaction receipt mined:")
 st.write(dict(receipt))
 
-# FROM MIKE this is the old code, partially repurposed, but it doesnt work, need to wait for receipt
+tokens = contract.functions.balanceOf(address).call()
 
-# wallet_balance_wei = w3.eth.getBalance(address)
-# wallet_balance_flex_token = int(wallet_balance_wei/1000000000000000000)
-# Wallet_FLEX_balance = contract.functions.balanceOf(address).transact()
-# st.write(f"Your wallet contains {Wallet_FLEX_balance} FLEX tokens.")
+st.markdown(f"#### This address owns {tokens} tokens.")
 
-private_key = st.text_input("Enter Your Private Key")
+gym_private_key = "1f3dfc8865928cc5a03fbc7cf8168789c9c60ebf1064812d22cd62def0449ede"
 
 # Items list
 items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
@@ -113,10 +113,11 @@ st.sidebar.write(total)
 st.markdown('### To purchase the items selected from the BlockGym Store, press the button below.')
 
 # Purchase items button
+# !!!!!!Note: The issue is in the transfer function 
 if st.button("PURCHASE ITEM(S)"):
     tx_hash = contract.functions.transfer(address, total).transact({
         "from": address,
-        "gas": 1000000
+        "amount": total
     })
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
@@ -130,9 +131,9 @@ st.image('Images/member_token.png')
 # Purchase button 
 
 if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
-    tx_hash = contract.functions.mint("0x7F038EEe69A49b2C3291dDe5526Df1cd887a31E8", 50000000000000000000).transact({
-        "from": "0x7F038EEe69A49b2C3291dDe5526Df1cd887a31E8",
-        "amount": 50000000000000000000
+    tx_hash = contract.functions.mint(address, 50).transact({
+        "from": address,
+        "amount": 50
     })
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
@@ -144,9 +145,9 @@ st.image(item_database["Additional Token"][2])
 additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20)
 
 if st.button("PURCHASE ADDITIONAL TOKENS"):
-    tx_hash = contract.functions.transfer(address, additional_quantity).transact({
+    tx_hash = contract.functions.mint(address, additional_quantity).transact({
         "from": address,
-        "gas": 1000000
+        "amount": additional_quantity 
     })
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
