@@ -2,11 +2,14 @@
 import os
 import json
 from pathlib import Path
+from sqlite3 import Time
 import streamlit as st
 from web3 import Web3 
 from dotenv import load_dotenv
 from crypto_wallet import generate_account, get_balance, send_transaction
+from checkin import check_price
 import pandas as pd
+from datetime import datetime
 load_dotenv("SAMPLE.env")
 
 # Define and connect to a new Web3 provider
@@ -58,11 +61,13 @@ receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 st.write("Transaction receipt mined:")
 st.write(dict(receipt))
 
-tokens = contract.functions.balanceOf(address).call()
 
-st.markdown(f"#### This address owns {tokens} tokens.")
+# MIKE Can't ge tthis to work
+# tokens = contract.functions.balanceOf(address).call()
 
-gym_private_key = "1f3dfc8865928cc5a03fbc7cf8168789c9c60ebf1064812d22cd62def0449ede"
+# st.markdown(f"#### This address owns {tokens} tokens.")
+
+# gym_private_key = "1f3dfc8865928cc5a03fbc7cf8168789c9c60ebf1064812d22cd62def0449ede"
 
 # Items list
 items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
@@ -152,3 +157,36 @@ if st.button("PURCHASE ADDITIONAL TOKENS"):
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
     st.write(dict(receipt))
+
+
+# def check_price(checkedin):
+#     now = datetime.now()
+#     old_count = 0
+#     cutoff_time = now - pd.DateOffset(seconds = 10)
+#     for time in checkedin:
+#         if time < cutoff_time:
+#             old_count = old_count + 1
+#     price = 2 + len(checkedin) - old_count
+#     return price
+
+checkinhistory = []
+
+if 'history' not in st.session_state:
+    st.session_state['history'] = checkinhistory
+
+if 'history' in st.session_state:
+    checkinhistory = st.session_state['history']
+
+current_checkedin = st.slider('Current number of gym attendees:', 1, 100, 20)
+
+st.markdown('## Check into the Gym.')
+if st.button("Get Current Price"):
+    price = check_price(checkinhistory)
+    st.markdown(f"### There are currently {price - 2} people in the Gym.  The price is {price} tokens.")
+
+
+if st.button("Check In"):
+    price = check_price(checkinhistory)
+    checkinhistory.append(datetime.now())
+    st.write(checkinhistory)
+    st.markdown(f"### You checked in for {price} tokens.")
