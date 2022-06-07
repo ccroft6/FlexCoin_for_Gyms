@@ -101,9 +101,6 @@ total = item_database[select_item][1] * quantity
 st.sidebar.write(f'The Item(s) You Selected Cost: {total} tokens')
 st.sidebar.write(total)
 
-# Gym Store Header
-st.markdown('### To purchase the items selected from the BlockGym Store, press the button below.')
-
 # Transfer function definition 
 def transfer(toAddress, fromAddress, amount):
     amount = amount * 1000000000000000000
@@ -117,7 +114,7 @@ def transfer(toAddress, fromAddress, amount):
     st.write(dict(receipt))
 
 # Purchase items button
-if st.button("PURCHASE ITEM(S)"):
+if st.sidebar.button("PURCHASE ITEM(S)"):
     transfer(gym_address, address, total)
 
 # Membership description
