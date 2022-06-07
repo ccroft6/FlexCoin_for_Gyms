@@ -6,7 +6,6 @@ from sqlite3 import Time
 import streamlit as st
 from web3 import Web3 
 from dotenv import load_dotenv
-from crypto_wallet import generate_account, get_balance, send_transaction
 from checkin import check_price
 import pandas as pd
 from datetime import datetime
