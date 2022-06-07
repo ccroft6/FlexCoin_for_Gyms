@@ -136,9 +136,9 @@ st.image('Images/member_token.png')
 # Purchase button 
 
 if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
-    tx_hash = contract.functions.mint(address, 50).transact({
+    tx_hash = contract.functions.mint(address, 50000000000000000000).transact({
         "from": address,
-        "amount": 50
+        "amount": 50000000000000000000
     })
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
@@ -147,7 +147,7 @@ if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
 # Purchase additional tokens
 st.markdown('### Running out of tokens this month? Purchase additional tokens here!')
 st.image(item_database["Additional Token"][2])
-additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20)
+additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20) * 1000000000000000000
 
 if st.button("PURCHASE ADDITIONAL TOKENS"):
     tx_hash = contract.functions.mint(address, additional_quantity).transact({
@@ -190,3 +190,18 @@ if st.button("Check In"):
     checkinhistory.append(datetime.now())
     st.write(checkinhistory)
     st.markdown(f"### You checked in for {price} tokens.")
+
+if st.button("Transfer"):
+    toAddress = "0xF5C49AD17946066e337D8be3Fb8463f3434D8979"
+    transferAmount = 10000000000000000000
+    nonce = w3.eth.get_transaction_count(address)
+    privateKey = "bc76b626ad284213ae2310ae303391723040f06855fbe88346d3938e3409e6cf"
+
+    transferTxn = contract.functions.transfer(toAddress, transferAmount).buildTransaction({
+        'from' : address,
+        'chainId' : 56,
+        'nonce' : nonce
+    })
+
+    signedTxn = w3.eth.account.signTransaction(transferTxn, private_key=privateKey)
+    w3.eth.sendRawTransaction(signedTxn.rawTransaction)
