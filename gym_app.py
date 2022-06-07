@@ -51,23 +51,11 @@ st.markdown("## FlexCoin incentivizes you to come to the gym at a time when it i
 st.write("Choose your account to get started")
 accounts = w3.eth.accounts
 address = st.selectbox("Select Account", options = accounts)
+gym_address = os.getenv('OWNER_ADD')
 
-# Get the current balance of the tokens
-tx_hash = contract.functions.balanceOf(address).transact({
-    "from": address,
-    "gas": 1000000
-    })
-receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-st.write("Transaction receipt mined:")
-st.write(dict(receipt))
+tokens = contract.functions.balanceOf(address).call()
 
-
-# MIKE Can't ge tthis to work
-# tokens = contract.functions.balanceOf(address).call()
-
-# st.markdown(f"#### This address owns {tokens} tokens.")
-
-# gym_private_key = "1f3dfc8865928cc5a03fbc7cf8168789c9c60ebf1064812d22cd62def0449ede"
+st.markdown(f"#### This address owns {tokens/1000000000000000000} tokens.")
 
 # Items list
 items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
@@ -117,16 +105,21 @@ st.sidebar.write(total)
 # Gym Store Header
 st.markdown('### To purchase the items selected from the BlockGym Store, press the button below.')
 
-# Purchase items button
-# !!!!!!Note: The issue is in the transfer function 
-if st.button("PURCHASE ITEM(S)"):
-    tx_hash = contract.functions.transfer(address, total).transact({
-        "from": address,
-        "amount": total
+# Transfer function definition 
+def transfer(toAddress, fromAddress, amount):
+    amount = amount * 1000000000000000000
+    tx_hash = contract.functions.transfer(toAddress, amount).transact({
+        'from': fromAddress,
+        'chainId': 1337,
+        'nonce': w3.eth.get_transaction_count(fromAddress)
     })
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     st.write("Transaction receipt mined:")
     st.write(dict(receipt))
+
+# Purchase items button
+if st.button("PURCHASE ITEM(S)"):
+    transfer(gym_address, address, total)
 
 # Membership description
 st.markdown('## Membership Costs')
@@ -136,38 +129,16 @@ st.image('Images/member_token.png')
 # Purchase button 
 
 if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
-    tx_hash = contract.functions.mint(address, 50000000000000000000).transact({
-        "from": address,
-        "amount": 50000000000000000000
-    })
-    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-    st.write("Transaction receipt mined:")
-    st.write(dict(receipt))
+    transfer(address, os.getenv('OWNER_ADD'), 50)
 
 # Purchase additional tokens
 st.markdown('### Running out of tokens this month? Purchase additional tokens here!')
 st.image(item_database["Additional Token"][2])
-additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20) * 1000000000000000000
+additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20)
 
 if st.button("PURCHASE ADDITIONAL TOKENS"):
-    tx_hash = contract.functions.mint(address, additional_quantity).transact({
-        "from": address,
-        "amount": additional_quantity 
-    })
-    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-    st.write("Transaction receipt mined:")
-    st.write(dict(receipt))
+    transfer(address, gym_address, additional_quantity)
 
-
-# def check_price(checkedin):
-#     now = datetime.now()
-#     old_count = 0
-#     cutoff_time = now - pd.DateOffset(seconds = 10)
-#     for time in checkedin:
-#         if time < cutoff_time:
-#             old_count = old_count + 1
-#     price = 2 + len(checkedin) - old_count
-#     return price
 
 checkinhistory = []
 
@@ -177,7 +148,6 @@ if 'history' not in st.session_state:
 if 'history' in st.session_state:
     checkinhistory = st.session_state['history']
 
-current_checkedin = st.slider('Current number of gym attendees:', 1, 100, 20)
 
 st.markdown('## Check into the Gym.')
 if st.button("Get Current Price"):
@@ -188,20 +158,7 @@ if st.button("Get Current Price"):
 if st.button("Check In"):
     price = check_price(checkinhistory)
     checkinhistory.append(datetime.now())
+    transfer(gym_address, address, price)
     st.write(checkinhistory)
     st.markdown(f"### You checked in for {price} tokens.")
 
-if st.button("Transfer"):
-    toAddress = "0xF5C49AD17946066e337D8be3Fb8463f3434D8979"
-    transferAmount = 10000000000000000000
-    nonce = w3.eth.get_transaction_count(address)
-    privateKey = "bc76b626ad284213ae2310ae303391723040f06855fbe88346d3938e3409e6cf"
-
-    transferTxn = contract.functions.transfer(toAddress, transferAmount).buildTransaction({
-        'from' : address,
-        'chainId' : 56,
-        'nonce' : nonce
-    })
-
-    signedTxn = w3.eth.account.signTransaction(transferTxn, private_key=privateKey)
-    w3.eth.sendRawTransaction(signedTxn.rawTransaction)
