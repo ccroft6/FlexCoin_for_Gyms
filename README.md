@@ -6,7 +6,7 @@
 
 Use tokenization to convert membership into the ownership of coins which will be spent to gain access, use premium amenities, purchase merchandise, and other services of value. 
 
-From a users’ perspective, tokenization can also provide consumption data so that users can determine their own behavior and spending habits. 
+From users’ perspective, tokenization can also provide consumption data so that users can determine their own behavior and spending habits. 
 
 For the purpose of this project, we will focus on using blockchain to determine the fluctuation of the cost per visit, based on how many users have spent tokens to access the gym at any point in time. 
 
