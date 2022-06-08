@@ -67,7 +67,7 @@ item_database = {
     'Gym Shirt': ['Gym Shirt', 10, 'Images/gym_shirt.jpg'],
     'Gym Shorts': ['Gym Shorts', 12, 'Images/gym_shorts.jpg'],
     'Full Body Massage': ['Full Body Massage', 20, 'Images/massage.jpeg'],
-    'Additional Token': ['Additional Token', 1, 'Images/token.jpeg'] 
+    'Additional Token': ['Additional Token', 1, 'Images/token.jpg'] 
     }
 
 # Title for sidebar
