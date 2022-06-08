@@ -76,6 +76,8 @@ If you do not already have MetaMask and Ganache installed, install them now:
 
 ## Usage and Implementation
 
+Here is a quick preview of how the application works:
+
 ![Streamlit GIF](Streamlit_Examples/Streamlit_FlexCoin_example.gif)
 
 
