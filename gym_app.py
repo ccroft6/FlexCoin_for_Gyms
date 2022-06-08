@@ -9,14 +9,14 @@ from dotenv import load_dotenv
 from checkin import check_price
 import pandas as pd
 from datetime import datetime
-load_dotenv("SAMPLE.env")
+load_dotenv('SAMPLE.env')
 
 # Define and connect to a new Web3 provider
-w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
+w3 = Web3(Web3.HTTPProvider(os.getenv('WEB3_PROVIDER_URI')))
 
 # Set as main streamlit page
-st.markdown("# BlockGym 🎈")
-st.sidebar.markdown("# BlockGym 🎈")
+st.markdown('# BlockGym')
+st.sidebar.markdown('')
 
 # Loads the contract once using cache
 # Connects to the contract using the contract address and ABI
@@ -28,7 +28,7 @@ def load_contract():
         contract_abi = json.load(f)
 
     # Set the contract address (this is the address of the deployed contract)
-    contract_address = os.getenv("SMART_CONTRACT_ADDRESS")
+    contract_address = os.getenv('SMART_CONTRACT_ADDRESS')
 
     # Get the contract
     contract = w3.eth.contract(
@@ -41,33 +41,33 @@ def load_contract():
 contract = load_contract()
 
 # Streamlit image and title 
-st.image("Images/eth_weights.png", use_column_width = True)
-st.title("FlexCoin for the BlockGym")
-st.markdown("## FlexCoin incentivizes you to come to the gym at a time when it is not too busy, so that you can access the equipment you need now to flex your muscles later.")
+st.image('Images/eth_weights.jpg', use_column_width = True)
+st.title('FlexCoin for the BlockGym')
+st.markdown('### FlexCoin incentivizes you to come to the gym at a time when it is not too busy, so that you can access the equipment you need now to flex your muscles later.')
 
 # Access account and token balance 
-st.write("Choose your account to get started")
+st.write('Choose your account to get started')
 accounts = w3.eth.accounts
-address = st.selectbox("Select Account", options = accounts)
+address = st.selectbox('Select Account', options = accounts)
 gym_address = os.getenv('OWNER_ADD')
 
 tokens = contract.functions.balanceOf(address).call()
 
-st.markdown(f"#### This address owns {tokens/1000000000000000000} tokens.")
+st.markdown(f'#### This address owns {tokens/1000000000000000000} tokens.')
 
 # Items list
-items = ["Towel", "Smoothie", "Water Bottle", "Gym Bag", "Gym Shirt", "Gym Shorts", "Full Body Massage"]
+items = ['Towel', 'Smoothie', 'Water Bottle', 'Gym Bag', 'Gym Shirt', 'Gym Shorts', 'Full Body Massage']
 
 # Gym Store database
 item_database = {
-    "Towel": ["Towel", 2, "Images/towel.jpeg"],
-    "Smoothie": ["Smoothie", 7, "Images/smoothie.jpeg"],
-    "Water Bottle": ["Water Bottle", 3, "Images/water_bottle.jpeg"],
-    "Gym Bag": ["Gym Bag", 15, "Images/gym_bag.jpeg"],
-    "Gym Shirt": ["Gym Shirt", 10, "Images/gym_shirt.jpeg"],
-    "Gym Shorts": ["Gym Shorts", 12, "Images/gym_shorts.jpeg"],
-    "Full Body Massage": ["Full Body Massage", 20, "Images/massage.jpeg"],
-    "Additional Token": ["Additional Token", 1, "Images/token.jpeg"] 
+    'Towel': ['Towel', 2, 'Images/towel.jpg'],
+    'Smoothie': ['Smoothie', 7, 'Images/smoothie.jpeg'],
+    'Water Bottle': ['Water Bottle', 3, 'Images/water_bottle.jpg'],
+    'Gym Bag': ['Gym Bag', 15, 'Images/gym_bag.jpg'],
+    'Gym Shirt': ['Gym Shirt', 10, 'Images/gym_shirt.jpg'],
+    'Gym Shorts': ['Gym Shorts', 12, 'Images/gym_shorts.jpg'],
+    'Full Body Massage': ['Full Body Massage', 20, 'Images/massage.jpeg'],
+    'Additional Token': ['Additional Token', 1, 'Images/token.jpeg'] 
     }
 
 # Title for sidebar
@@ -80,12 +80,12 @@ select_item = st.sidebar.selectbox('Select an Item', items)
 st.sidebar.image(item_database[select_item][2])
 
 # Read in csv file with gym items
-df = pd.read_csv("gym_items.csv", index_col = "item", parse_dates=True, infer_datetime_format = True)
+df = pd.read_csv('gym_items.csv', index_col = 'item', parse_dates=True, infer_datetime_format = True)
 
 df.sort_index(inplace=True, ascending = False)
 
 # Slider for quantity of item 
-quantity = st.sidebar.slider("Select Quantity of Item:", 1, 50, 2)
+quantity = st.sidebar.slider('Select Quantity of Item:', 1, 50, 2)
 
 # Identify the price 
 price = item_database[select_item][1]
@@ -110,29 +110,33 @@ def transfer(toAddress, fromAddress, amount):
         'nonce': w3.eth.get_transaction_count(fromAddress)
     })
     receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-    st.write("Transaction receipt mined:")
+    st.write('Transaction receipt mined:')
     st.write(dict(receipt))
 
 # Purchase items button
-if st.sidebar.button("PURCHASE ITEM(S)"):
+if st.sidebar.button('PURCHASE ITEM(S)'):
     transfer(gym_address, address, total)
 
 # Membership description
 st.markdown('## Membership Costs')
 st.markdown('### Each month, members must purchase and use at least 50 tokens.') 
-st.image('Images/member_token.png')
+st.image('Images/member_token.jpg')
 
 # Purchase membership tokens button 
-if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
+if st.button('PURCHASE 50 MEMBERSHIP TOKENS'):
     transfer(address, os.getenv('OWNER_ADD'), 50)
 
 # Purchase additional tokens 
 st.markdown('### Running out of tokens this month? Purchase additional tokens here!')
-st.image(item_database["Additional Token"][2])
+st.image(item_database['Additional Token'][2])
 additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20)
 
+<<<<<<< HEAD
+if st.button('PURCHASE ADDITIONAL TOKENS'):
+=======
 # Purchase additional tokens button
 if st.button("PURCHASE ADDITIONAL TOKENS"):
+>>>>>>> a9f620317c54b2d5a9c653443d159b275bf6d7fc
     transfer(address, gym_address, additional_quantity)
 
 # Create check-in list
@@ -148,14 +152,23 @@ if 'history' in st.session_state:
 st.markdown('## Check Into the Gym Here!')
 st.image('Images/check_in.png')
 
-if st.button("Get Current Price"):
+if st.button('Get Current Price'):
     price = check_price(checkinhistory)
-    st.markdown(f"### There are currently {price - 2} people in the Gym. The price is {price} tokens.")
+    st.markdown(f'### There are currently {price - 2} people in the Gym. The price is {price} tokens.')
 
 # Create check-in button to have memebers check-in to the gym
+<<<<<<< HEAD
+if st.button('Check In'):
+=======
 if st.button("CHECK IN"):
+>>>>>>> a9f620317c54b2d5a9c653443d159b275bf6d7fc
     price = check_price(checkinhistory)
     checkinhistory.append(datetime.now())
     transfer(gym_address, address, price)
     st.write(checkinhistory)
+<<<<<<< HEAD
+    st.markdown(f'### You checked in for {price} tokens.')
+
+=======
     st.markdown(f"### You checked in for {price} tokens.")
+>>>>>>> a9f620317c54b2d5a9c653443d159b275bf6d7fc
