@@ -119,7 +119,7 @@ if st.sidebar.button("PURCHASE ITEM(S)"):
 
 # Membership description
 st.markdown('## Membership Costs')
-st.markdown('### Each month, members must purchase at least 50 tokens.') 
+st.markdown('### Each month, members must purchase and use at least 50 tokens.') 
 st.image('Images/member_token.png')
 
 # Purchase membership tokens button 
@@ -144,10 +144,12 @@ if 'history' in st.session_state:
     checkinhistory = st.session_state['history']
 
 # Check current price of entering gym based on number of people checked in
-st.markdown('## Check into the Gym.')
+st.markdown('## Check Into the Gym Here!')
+st.image('Images/check_in.png')
+
 if st.button("Get Current Price"):
     price = check_price(checkinhistory)
-    st.markdown(f"### There are currently {price - 2} people in the Gym.  The price is {price} tokens.")
+    st.markdown(f"### There are currently {price - 2} people in the Gym. The price is {price} tokens.")
 
 # Create check-in button to have memebers check-in to the gym
 if st.button("Check In"):
