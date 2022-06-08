@@ -68,10 +68,12 @@ If you do not already have MetaMask and Ganache installed, install them now:
 14. Deploy the FlexCoin contract (remember to fill in the required boxes of 'name', 'symbol', and 'initial_supply' before deploying)
 15. Copy the smart contract address of the deployed contract and paste it into the SAMPLE.env file next to 'SMART_CONTRACT_ADDRESS'
 16. Copy the first account address from Ganache (i.e., owner account) and paste it into the SAMPLE.env file next to 'OWNER_ADD' 
-16. Use the functions in Remix IDE to mint coins to the owner and add minters 
-17. Run the streamlit application by typing the following into your terminal:
+17. Import FLEX token to the MetaMask accounts under the "Assets" tab
+18. Use the functions in Remix IDE to mint coins to the owner and add minters 
+19. Run the streamlit application by typing the following into your terminal:
 ` streamlit run gym_app.py`
-18. Interact with the Streamlit drop down menus and buttons (See examples below)
+20. Interact with the Streamlit drop down menus and buttons (See examples below)
+
 ---
 
 ## Usage and Implementation
