@@ -131,12 +131,8 @@ st.markdown('### Running out of tokens this month? Purchase additional tokens he
 st.image(item_database['Additional Token'][2])
 additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20)
 
-<<<<<<< HEAD
-if st.button('PURCHASE ADDITIONAL TOKENS'):
-=======
 # Purchase additional tokens button
-if st.button("PURCHASE ADDITIONAL TOKENS"):
->>>>>>> a9f620317c54b2d5a9c653443d159b275bf6d7fc
+if st.button('PURCHASE ADDITIONAL TOKENS'):
     transfer(address, gym_address, additional_quantity)
 
 # Create check-in list
@@ -157,18 +153,10 @@ if st.button('Get Current Price'):
     st.markdown(f'### There are currently {price - 2} people in the Gym. The price is {price} tokens.')
 
 # Create check-in button to have memebers check-in to the gym
-<<<<<<< HEAD
 if st.button('Check In'):
-=======
-if st.button("CHECK IN"):
->>>>>>> a9f620317c54b2d5a9c653443d159b275bf6d7fc
     price = check_price(checkinhistory)
     checkinhistory.append(datetime.now())
     transfer(gym_address, address, price)
     st.write(checkinhistory)
-<<<<<<< HEAD
     st.markdown(f'### You checked in for {price} tokens.')
 
-=======
-    st.markdown(f"### You checked in for {price} tokens.")
->>>>>>> a9f620317c54b2d5a9c653443d159b275bf6d7fc
