@@ -153,7 +153,7 @@ if st.button("Get Current Price"):
     st.markdown(f"### There are currently {price - 2} people in the Gym. The price is {price} tokens.")
 
 # Create check-in button to have memebers check-in to the gym
-if st.button("Check In"):
+if st.button("CHECK IN"):
     price = check_price(checkinhistory)
     checkinhistory.append(datetime.now())
     transfer(gym_address, address, price)
