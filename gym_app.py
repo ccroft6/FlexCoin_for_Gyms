@@ -126,11 +126,12 @@ st.image('Images/member_token.png')
 if st.button("PURCHASE 50 MEMBERSHIP TOKENS"):
     transfer(address, os.getenv('OWNER_ADD'), 50)
 
-# Purchase additional tokens
+# Purchase additional tokens 
 st.markdown('### Running out of tokens this month? Purchase additional tokens here!')
 st.image(item_database["Additional Token"][2])
 additional_quantity = st.slider('Select quantity of tokens:', 1, 100, 20)
 
+# Purchase additional tokens button
 if st.button("PURCHASE ADDITIONAL TOKENS"):
     transfer(address, gym_address, additional_quantity)
 
@@ -158,4 +159,3 @@ if st.button("Check In"):
     transfer(gym_address, address, price)
     st.write(checkinhistory)
     st.markdown(f"### You checked in for {price} tokens.")
-
