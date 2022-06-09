@@ -103,6 +103,12 @@ The user can click the "Get Current Price" button to see how many people are at 
 The user clicks the "check in" button to check in for that price (5 tokens in this example):
 ![Check in](Streamlit_Examples/check_in.png)
 
+There is also a Gym Store where users can purchase gym-related items:
+![Gym Store](Streamlit_Examples/gym_store.png)
+
+In this example, the member uses the slider to purchase 3 water bottles at a cost of 9 tokens. The member clicks the "Purchase Item(s)" button, and the transaction receipt appears on the center of the app:
+![Buy Water Bottle](Streamlit_Examples/buy_bottle.png)
+
 ---
 
 ## Project Contributors
