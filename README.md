@@ -82,8 +82,26 @@ Here is a quick preview of how the application works:
 
 ![Streamlit GIF](Streamlit_Examples/Streamlit_FlexCoin_example.gif)
 
+On the Streamlit app, you will first choose an account (10 accounts are loaded in from Ganache; the accounts need to be connected to MetaMask in order to work):
+![Choose Account](Streamlit_Examples/choose_account.png)
 
+The app tells the user how many tokens they currently have and describes the monthly membership costs:
+![Token Amount](Streamlit_Examples/token_amount.png)
 
+The user can use the "Purchase membership tokens" button to purchase the 50 membership tokens:
+![Membership Tokens](Streamlit_Examples/membership_tokens.png)
+
+As a result, the token amount for the account increased by 50 tokens:
+![Add 50](Streamlit_Examples/plus_50.png)
+
+If a user needs more tokens, additional tokens can be purchased using the slider:
+![Additional Tokens](Streamlit_Examples/add_tokens.png)
+
+The user can click the "Get Current Price" button to see how many people are at the gym and how much it costs to enter based on the number of people at the gym:
+![Get Current Price](Streamlit_Examples/get_price.png)
+
+The user clicks the "check in" button to check in for that price (4 tokens in this example):
+![Check in](Streamlit_Examples/checkin.png)
 
 ---
 
