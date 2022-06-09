@@ -148,12 +148,13 @@ if 'history' in st.session_state:
 st.markdown('## Check Into the Gym Here!')
 st.image('Images/check_in.png')
 
+# Create button to check the current price
 if st.button('Get Current Price'):
     price = check_price(checkinhistory)
     st.markdown(f'### There are currently {price - 2} people in the Gym. The price is {price} tokens.')
 
 # Create check-in button to have memebers check-in to the gym
-if st.button('Check In'):
+if st.button('CHECK IN'):
     price = check_price(checkinhistory)
     checkinhistory.append(datetime.now())
     transfer(gym_address, address, price)
