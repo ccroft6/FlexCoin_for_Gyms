@@ -119,7 +119,7 @@ if st.sidebar.button('PURCHASE ITEM(S)'):
 
 # Membership description
 st.markdown('## Membership Costs')
-st.markdown('### Each month, members must purchase and use at least 50 tokens.') 
+st.markdown('### Each month, members must purchase at least 50 tokens.') 
 st.image('Images/member_token.jpg')
 
 # Purchase membership tokens button 
