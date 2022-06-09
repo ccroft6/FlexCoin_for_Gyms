@@ -100,8 +100,8 @@ If a user needs more tokens, additional tokens can be purchased using the slider
 The user can click the "Get Current Price" button to see how many people are at the gym and how much it costs to enter based on the number of people at the gym:
 ![Get Current Price](Streamlit_Examples/get_price.png)
 
-The user clicks the "check in" button to check in for that price (4 tokens in this example):
-![Check in](Streamlit_Examples/checkin.png)
+The user clicks the "check in" button to check in for that price (5 tokens in this example):
+![Check in](Streamlit_Examples/check_in.png)
 
 ---
 
